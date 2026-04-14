@@ -1,23 +1,179 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeon Ga Hyun | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #09090b; color: white; margin: 0; overflow-x: hidden; }
+        .text-stroke { -webkit-text-stroke: 1px rgba(255,255,255,0.3); color: transparent; }
+        .brutal-border { border: 1px solid rgba(255,255,255,0.1); }
+        .text-accent { color: #f43f5e; }
+        .bg-accent { background-color: #f43f5e; }
+        .selection\:bg-accent::selection { background-color: #f43f5e; color: white; }
+    </style>
+</head>
+<body>
     <div id="root"></div>
-    <script type="module">
-      import React, { StrictMode } from 'https://esm.sh/react@19.0.0';
-      import { createRoot } from 'https://esm.sh/react-dom@19.0.0/client';
-      import App from './src/App.tsx';
 
-      createRoot(document.getElementById('root')).render(
-        React.createElement(StrictMode, null, 
-          React.createElement(App, null)
-        )
-      );
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion } = window.Motion;
+        const { 
+            User, Mail, Phone, Calendar, GraduationCap, Award, Layers, 
+            ExternalLink, Instagram, Youtube, Video, BookOpen, Figma: FigmaIcon 
+        } = lucide;
+
+        const BASE = "https://raw.githubusercontent.com/jgh041015-boop/jeongahyun.github.io/main/";
+
+        const SectionTitle = ({ children, number }) => (
+            <div className="flex items-baseline gap-4 mb-12">
+                <span className="text-accent text-4xl opacity-50 font-bold">{number}</span>
+                <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter">{children}</h2>
+            </div>
+        );
+
+        const SkillBar = ({ name, percentage }) => (
+            <div className="mb-6">
+                <div className="flex justify-between mb-2">
+                    <span className="font-medium uppercase tracking-wider text-sm">{name}</span>
+                    <span className="text-xs opacity-60">{percentage}%</span>
+                </div>
+                <div className="h-1 bg-white/10 w-full overflow-hidden">
+                    <motion.div 
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${percentage}%` }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="h-full bg-accent"
+                    />
+                </div>
+            </div>
+        );
+
+        function App() {
+            const activities = [
+                { date: "2024/05/21 ~ 2024/08/18", title: "교내 소모임 '크로셰' 소모임장", desc: "교내 소모임을 이끌며 다양한 창작 활동을 진행함." },
+                { date: "2025/05/01 ~ 2025/08/18", title: "교내 소모임 '알쓸한잡'", desc: "인스타그램 운영 및 카페 추천 숏폼 기획/제작.", link: "https://www.instagram.com/ashs_zip", type: 'instagram' },
+                { date: "2025/09/01 ~ 2025/12/05", title: "학과 소모임 '프리즘'", desc: "문학 기반 문화콘텐츠 기획 활동. 학과 우수 소모임 선정." },
+                { date: "2025. 9. 5. ~ 현재", title: "개인 유튜브 채널 운영", desc: "공연 브이로그 편집. 최근 영상 조회수 1천 회 기록.", link: "https://www.youtube.com/@heimoffgogo", type: 'youtube' },
+                { date: "2025/11/24", title: "2025 단양갱 페스타 서포터즈", desc: "AI를 활용해 축제 홍보 영상과 음악 제작." },
+                { date: "2025/11/28", title: "2025 한성 SW 페스티벌", desc: "AI 영상 작품 전시 및 최우수상 수상." },
+                { date: "2026/3/03 ~ 현재", title: "2026 여수세계섬박람회 서포터즈", desc: "AI 이용 여수 배경 애니메이션 제작 중." }
+            ];
+
+            const works = [
+                { title: "가나 광고", type: "AD", items: "Figma로 제작된 인쇄광고 비주얼", img: `gana_movie.png`, 
+                  gallery: [ {url: 'gana_gift.png'}, {url: 'gana_yt.png'}, {url: 'gana_movie.png'}, {url: 'gana_interpark.png'}, {url: 'gana_reels.png'} ] },
+                { title: "<방문자: The Guest>", type: "Animation", items: "AI 크리에이티브 콘텐츠 챌린지 수상작", img: `guest_poster.png`, 
+                  youtube: "https://youtu.be/6wdYSdxIA7o", gallery: [ {url: 'guest_poster.png'} ] },
+                { title: "<나루와 상이>", type: "Animation", items: "여수국제웹드라마영화제 출품 예정작", img: `naru_1.png`,
+                  gallery: [ {url: 'naru_1.png'}, {url: 'naru_2.png'}, {url: 'naru_3.png'}, {url: 'naru_4.png'}, {url: 'naru_5.png'} ] }
+            ];
+
+            return (
+                <div className="selection:bg-accent selection:text-white">
+                    <header className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-6 py-8 md:px-12 flex justify-between items-center text-white">
+                        <h1 className="text-2xl font-bold tracking-tighter uppercase">Jeon Ga Hyun</h1>
+                        <nav className="hidden md:flex gap-8 text-xs uppercase tracking-widest font-semibold">
+                            <a href="#profile" className="hover:text-accent transition-colors">Profile</a>
+                            <a href="#skills" className="hover:text-accent transition-colors">Skills</a>
+                            <a href="#works" className="hover:text-accent transition-colors">Works</a>
+                        </nav>
+                    </header>
+
+                    <main className="pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto">
+                        <section className="mb-32 min-h-[70vh] flex items-center">
+                            <div className="flex flex-col md:flex-row gap-8 items-center justify-between w-full">
+                                <div className="md:w-3/4">
+                                    <p className="text-accent text-sm mb-4 uppercase tracking-widest">Content Planner & Creator</p>
+                                    <h1 className="text-7xl md:text-9xl font-bold uppercase leading-[0.85] tracking-tighter mb-10">
+                                        Creative <br /> <span className="text-stroke">Visionary</span>
+                                    </h1>
+                                    <p className="text-lg md:text-xl text-zinc-400 max-w-2xl">
+                                        창의적인 시선으로 세상을 담는 전가현입니다. 디지털 툴과 AI를 활용해 상상을 현실로 구현합니다.
+                                    </p>
+                                </div>
+                                <div className="md:w-1/4 flex justify-end">
+                                    <div className="w-64 h-64 rounded-full overflow-hidden brutal-border shadow-2xl">
+                                        <img src={`${BASE}profile.jpg`} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="profile" className="mb-40">
+                            <SectionTitle number="01">Profile</SectionTitle>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                                <div className="space-y-8 text-xl">
+                                    <div className="flex items-center gap-4"><User className="text-zinc-500" /> 전가현 (2004-04-10)</div>
+                                    <div className="flex items-center gap-4"><GraduationCap className="text-zinc-500" /> 한성대학교 문콘전공 / SW연계전공</div>
+                                    <div className="flex items-center gap-4"><Phone className="text-zinc-500" /> 010-4184-4476</div>
+                                    <div className="flex items-center gap-4"><Mail className="text-zinc-500" /> jgh041098@naver.com</div>
+                                </div>
+                                <div className="p-8 bg-zinc-900/50 brutal-border">
+                                    <h3 className="text-accent text-xs uppercase mb-8 flex items-center gap-2"><Award size={16}/> Awards</h3>
+                                    <div className="space-y-4">
+                                        <p>• 2024 상상력 프로젝트 최우수상</p>
+                                        <p className="text-accent">• 2025 생성 AI 콘텐츠 챌린지 최우수상</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="skills" className="mb-40">
+                            <SectionTitle number="02">Abilities</SectionTitle>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+                                <div>
+                                    <SkillBar name="Adobe Premiere" percentage={70} />
+                                    <SkillBar name="Photoshop" percentage={50} />
+                                    <SkillBar name="Midjourney / Runway" percentage={70} />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="p-8 bg-zinc-900 brutal-border text-center"><FigmaIcon size={40} className="mx-auto mb-2" /> Figma</div>
+                                    <div className="p-8 bg-zinc-900 brutal-border text-center"><BookOpen size={40} className="mx-auto mb-2" /> Notion</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="works" className="mb-40">
+                            <SectionTitle number="03">Selected Works</SectionTitle>
+                            <div className="space-y-24">
+                                {works.map((work, idx) => (
+                                    <div key={idx} className="group">
+                                        <div className="mb-8">
+                                            <p className="text-accent text-xs uppercase mb-2">{work.type}</p>
+                                            <h3 className="text-4xl md:text-5xl font-bold uppercase">{work.title}</h3>
+                                            <p className="text-zinc-400 mt-2">{work.items}</p>
+                                        </div>
+                                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                            {work.gallery.map((img, i) => (
+                                                <div key={i} className="aspect-square overflow-hidden brutal-border bg-zinc-900">
+                                                    <img src={`${BASE}${img.url}`} className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    </main>
+
+                    <footer className="border-t border-white/5 py-12 text-center opacity-40 text-[10px] tracking-widest">
+                        © 2026 JEON GA HYUN. ALL RIGHTS RESERVED.
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
-  </body>
+</body>
 </html>
-
