@@ -15,7 +15,6 @@
         .brutal-border { border: 1px solid rgba(255,255,255,0.1); }
         .text-accent { color: #f43f5e; }
         .bg-accent { background-color: #f43f5e; }
-        /* 팝업 애니메이션 */
         .modal-enter { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
@@ -29,13 +28,18 @@
 
         function App() {
             const [showMain, setShowMain] = useState(false);
-            const [selectedImg, setSelectedImg] = useState(null); // 크게 볼 이미지 상태
+            const [selectedImg, setSelectedImg] = useState(null);
 
             const activities = [
                 { date: "2024/05/21 ~ 2024/08/18", title: "교내 소모임 ‘크로셰’ 소모임장", desc: "교내 소모임을 이끌며 다양한 창작 활동을 진행함." },
                 { date: "2025/05/01 ~ 2025/08/18", title: "교내 소모임 ‘알쓸한잡’", desc: "인스타그램 계정 운영. 카페 추천 카드뉴스와 숏폼 기획·제작.", link: "https://www.instagram.com/ashs_zip?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
                 { date: "2025/09/01 ~ 2025/12/05", title: "학과 소모임 ‘프리즘’", desc: "독서 소모임 활동. 학과 우수 소모임으로 선정." },
-                { date: "2025. 9. 5. ~ 현재", title: "개인 유튜브 채널 운영", desc: "공연 브이로그 편집. 최근 영상 조회수 1천 회 기록.", link: "https://www.youtube.com/@heimoffgogo" },
+                { 
+                    date: "2025. 9. 5. ~ 현재", 
+                    title: "개인 유튜브 채널 운영", 
+                    desc: "공연 브이로그 편집. 최근 영상 조회수 2천 회 기록.", 
+                    link: "https://www.youtube.com/@heimoffgogo" 
+                },
                 { date: "2025/11/24", title: "2025 단양갱 페스타 서포터즈", desc: "AI를 활용해 영상과 음악 직접 제작." },
                 { date: "2025/11/28", title: "2025 한성 SW 페스티벌", desc: "생성형 AI 영상 제작 및 전시. 최우수상 수상." },
                 { date: "2026/3/03 ~ 현재", title: "2026 여수세계섬박람회 서포터즈", desc: "AI 활용 여수 배경 애니메이션 제작 중." }
@@ -62,7 +66,6 @@
 
             return (
                 <div className="p-6 md:p-12 max-w-6xl mx-auto">
-                    {/* 이미지 크게 보기 모달 */}
                     {selectedImg && (
                         <div className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4 cursor-zoom-out modal-enter" onClick={() => setSelectedImg(null)}>
                             <img src={BASE + selectedImg} className="max-w-full max-h-full object-contain shadow-2xl" />
