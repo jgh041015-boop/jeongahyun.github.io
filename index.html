@@ -17,22 +17,22 @@
         .brutal-border { border: 1px solid rgba(255,255,255,0.1); }
         .text-accent { color: #f43f5e; }
         .bg-accent { background-color: #f43f5e; }
-        .selection\:bg-accent::selection { background-color: #f43f5e; color: white; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState } = React;
         const { motion, AnimatePresence } = window.Motion;
-        const { 
-            User, Mail, Phone, Calendar, GraduationCap, Award, Layers, 
-            ExternalLink, Instagram, Youtube, Monitor, PenTool, Video, 
-            Figma: FigmaIcon, BookOpen 
-        } = lucide;
 
         const BASE = "https://raw.githubusercontent.com/jgh041015-boop/jeongahyun.github.io/main/";
+
+        // 아이콘을 안전하게 불러오는 방식 (가현님 코드 내 Lucide 아이콘 해결)
+        const LucideIcon = ({ name, size = 20, className = "" }) => {
+            const IconTag = lucide[name];
+            return IconTag ? <IconTag size={size} className={className} /> : null;
+        };
 
         const SectionTitle = ({ children, number }) => (
             <div className="flex items-baseline gap-4 mb-12">
@@ -62,19 +62,19 @@
             const [showMain, setShowMain] = useState(false);
 
             const activities = [
-                { date: "2024/05/21 ~ 2024/08/18", title: "교내 소모임 '크로셰' 소모임장", desc: "교내 소모임을 이끌며 다양한 창작 활동을 진행함." },
-                { date: "2025/05/01 ~ 2025/08/18", title: "교내 소모임 '알쓸한잡'", desc: "인스타그램 계정 운영. 대학교 시설 소개와 카페 추천 콘텐츠 기획/제작.", link: "https://www.instagram.com/ashs_zip", type: 'instagram' },
-                { date: "2025/09/01 ~ 2025/12/05", title: "학과 소모임 '프리즘'", desc: "문학 기반 콘텐츠 기획 활동. 학과 우수 소모임 선정." },
-                { date: "2025. 9. 5. ~ 현재", title: "개인 유튜브 채널 운영", desc: "공연 브이로그 편집. 최근 영상 조회수 1천 회 기록.", link: "https://www.youtube.com/@heimoffgogo", type: 'youtube' },
-                { date: "2025/11/24", title: "2025 단양갱 페스타 서포터즈", desc: "생성형 AI를 활용해 영상과 음악 직접 제작." },
-                { date: "2025/11/28", title: "2025 한성 SW 페스티벌", desc: "AI 영상 제작 및 전시. 최우수상 수상." },
-                { date: "2026/3/03 ~ 현재", title: "2026 여수세계섬박람회 서포터즈", desc: "AI 활용 여수 배경 애니메이션 제작 중." }
+                { date: "2024/05/21 ~ 2024/08/18", title: "교내 소모임 ‘크로셰’ 소모임장", desc: "교내 소모임을 이끌며 다양한 창작 활동을 진행함." },
+                { date: "2025/05/01 ~ 2025/08/18", title: "교내 소모임 ‘알쓸한잡’", desc: "인스타그램 계정 운영. 카페 추천 숏폼 기획/제작.", icon: "Instagram" },
+                { date: "2025/09/01 ~ 2025/12/05", title: "학과 소모임 ‘프리즘’", desc: "독서 소모임 활동 및 학과 우수 소모임 선정." },
+                { date: "2025. 9. 5. ~ 현재", title: "개인 유튜브 채널 운영", desc: "콘서트 브이로그 편집. 최근 영상 조회수 1천 회 기록.", icon: "Youtube" },
+                { date: "2025/11/24", title: "2025 단양갱 페스타 서포터즈", desc: "AI 활용 홍보 영상 제작." },
+                { date: "2025/11/28", title: "2025 한성 SW 페스티벌", desc: "생성형 AI 영상 제작 최우수상 수상." },
+                { date: "2026/3/03 ~ 현재", title: "2026 여수세계섬박람회 서포터즈", desc: "AI 애니메이션 제작 중." }
             ];
 
             const works = [
-                { title: "가나 광고", type: "AD", items: "Figma로 제작된 인쇄광고 비주얼", layout: "custom-gana", gallery: [ {url: 'gana_gift.png', label: 'Gift'}, {url: 'gana_yt.png', label: 'YouTube'}, {url: 'gana_movie.png', label: 'Movie'}, {url: 'gana_interpark.png', label: 'Interpark'}, {url: 'gana_reels.png', label: 'Reels'} ] },
-                { title: "<방문자: The Guest>", type: "Animation", items: "AI 크리에이티브 콘텐츠 챌린지 수상작", youtube: "https://youtu.be/6wdYSdxIA7o", gallery: [ {url: 'guest_poster.png', label: 'A2 Poster'} ] },
-                { title: "<나루와 상이>", type: "Animation", items: "여수국제웹드라마영화제 출품 예정", gallery: [ {url: 'naru_1.png'}, {url: 'naru_2.png'}, {url: 'naru_3.png'}, {url: 'naru_4.png'}, {url: 'naru_5.png'} ] }
+                { title: "가나 광고", type: "AD", items: "Figma 인쇄광고 비주얼", gallery: ['gana_gift.png', 'gana_yt.png', 'gana_movie.png', 'gana_interpark.png', 'gana_reels.png'] },
+                { title: "<방문자: The Guest>", type: "Animation", items: "AI 크리에이티브 콘텐츠 챌린지 수상작", gallery: ['guest_poster.png'] },
+                { title: "<나루와 상이>", type: "Animation", items: "여수국제웹드라마영화제 출품 예정", gallery: ['naru_1.png', 'naru_2.png', 'naru_3.png', 'naru_4.png', 'naru_5.png'] }
             ];
 
             return (
@@ -83,9 +83,7 @@
                         {!showMain ? (
                             <motion.div key="intro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -20 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950 cursor-pointer" onClick={() => setShowMain(true)}>
                                 <div className="text-center">
-                                    <h1 className="text-7xl md:text-[10rem] font-bold uppercase tracking-tighter leading-none hover:text-accent transition-colors duration-500">
-                                        Jeon <br className="md:hidden" /> Ga Hyun
-                                    </h1>
+                                    <h1 className="text-7xl md:text-[10rem] font-bold uppercase tracking-tighter leading-none hover:text-accent transition-colors duration-500">Jeon <br className="md:hidden" /> Ga Hyun</h1>
                                     <p className="mt-8 text-sm uppercase tracking-[0.5em] opacity-40 animate-pulse">Click to Enter</p>
                                 </div>
                             </motion.div>
@@ -96,6 +94,7 @@
                                     <nav className="hidden md:flex gap-8 text-xs uppercase tracking-widest font-semibold">
                                         <a href="#profile" className="hover:text-accent transition-colors">Profile</a>
                                         <a href="#skills" className="hover:text-accent transition-colors">Skills</a>
+                                        <a href="#activities" className="hover:text-accent transition-colors">Activities</a>
                                         <a href="#works" className="hover:text-accent transition-colors">Works</a>
                                     </nav>
                                 </header>
@@ -105,69 +104,48 @@
                                         <div className="flex flex-col md:flex-row gap-8 items-center justify-between w-full">
                                             <div className="md:w-3/4">
                                                 <p className="text-accent text-sm mb-4 uppercase tracking-widest">Content Planner & Creator</p>
-                                                <h1 className="text-7xl md:text-9xl font-bold uppercase leading-[0.85] tracking-tighter mb-10">
-                                                    Creative <br /> <span className="text-stroke">Visionary</span>
-                                                </h1>
-                                                <p className="text-lg md:text-xl text-zinc-400 max-w-2xl break-keep">
-                                                    창의적인 시선으로 세상을 담는 콘텐츠 기획자 전가현입니다. 디지털 툴을 활용해 상상을 현실로 구현합니다.
-                                                </p>
+                                                <h1 className="text-7xl md:text-9xl font-bold uppercase leading-[0.85] tracking-tighter mb-10">Creative <br /> <span className="text-stroke">Visionary</span></h1>
+                                                <p className="text-lg md:text-xl text-zinc-400 max-w-2xl">창의적인 시선으로 세상을 담는 콘텐츠 기획자 전가현입니다. AI를 활용해 상상을 현실로 구현합니다.</p>
                                             </div>
                                             <div className="md:w-1/4">
-                                                <div className="w-64 h-64 rounded-full overflow-hidden brutal-border shadow-2xl">
-                                                    <img src={`${BASE}profile.jpg`} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
-                                                </div>
+                                                <div className="w-64 h-64 rounded-full overflow-hidden brutal-border"><img src={BASE + "profile.jpg"} className="w-full h-full object-cover grayscale hover:grayscale-0" /></div>
                                             </div>
                                         </div>
                                     </section>
 
                                     <section id="profile" className="mb-40">
                                         <SectionTitle number="01">Profile</SectionTitle>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-                                            <div className="space-y-8 text-lg">
-                                                <p className="flex items-center gap-4"><User className="text-zinc-500" /> 전가현 (여) 2004-04-10</p>
-                                                <p className="flex items-center gap-4"><GraduationCap className="text-zinc-500" /> 한성대학교 문콘 / SW연계전공</p>
-                                                <p className="flex items-center gap-4"><Phone className="text-zinc-500" /> 010-4184-4476</p>
-                                                <p className="flex items-center gap-4"><Mail className="text-zinc-500" /> jgh041098@naver.com</p>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-lg">
+                                            <div className="space-y-6">
+                                                <p className="flex items-center gap-4"><LucideIcon name="User" /> 전가현 (2004-04-10)</p>
+                                                <p className="flex items-center gap-4"><LucideIcon name="GraduationCap" /> 한성대학교 문콘 / SW연계전공</p>
+                                                <p className="flex items-center gap-4"><LucideIcon name="Mail" /> jgh041098@naver.com</p>
                                             </div>
-                                            <div className="p-8 bg-zinc-900/50 brutal-border rounded-2xl">
-                                                <h3 className="text-accent text-xs uppercase mb-8 flex items-center gap-2"><Award size={16}/> Awards</h3>
-                                                <div className="space-y-4 text-sm">
-                                                    <p>• 2024 한성 상상력 프로젝트 최우수상</p>
-                                                    <p className="text-accent">• 2025 생성 AI 크리에이티브 챌린지 최우수상</p>
-                                                </div>
-                                            </div>
+                                            <div className="p-8 bg-zinc-900 brutal-border rounded-2xl"><h3 className="text-accent text-xs mb-4 uppercase">Awards</h3><p>• 2025 생성 AI 콘텐츠 챌린지 최우수상</p></div>
                                         </div>
                                     </section>
 
                                     <section id="skills" className="mb-40">
                                         <SectionTitle number="02">Abilities</SectionTitle>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
-                                            <div>
-                                                <SkillBar name="Adobe Premiere" percentage={70} />
-                                                <SkillBar name="Photoshop" percentage={50} />
-                                                <SkillBar name="AI Tools (Midjourney, Runway)" percentage={70} />
-                                            </div>
+                                            <div><SkillBar name="Premiere Pro" percentage={70}/><SkillBar name="AI Tools" percentage={70}/></div>
                                             <div className="grid grid-cols-2 gap-4">
-                                                <div className="p-8 bg-zinc-900 brutal-border rounded-xl text-center"><FigmaIcon size={32} className="mx-auto mb-2" /> Figma</div>
-                                                <div className="p-8 bg-zinc-900 brutal-border rounded-xl text-center"><BookOpen size={32} className="mx-auto mb-2" /> Notion</div>
+                                                <div className="p-6 bg-zinc-900 brutal-border rounded-xl text-center">Figma</div>
+                                                <div className="p-6 bg-zinc-900 brutal-border rounded-xl text-center">Notion</div>
                                             </div>
                                         </div>
                                     </section>
 
                                     <section id="works" className="mb-40">
                                         <SectionTitle number="03">Works</SectionTitle>
-                                        <div className="space-y-24">
+                                        <div className="space-y-20">
                                             {works.map((work, idx) => (
                                                 <div key={idx}>
-                                                    <div className="mb-8">
-                                                        <p className="text-accent text-xs uppercase mb-2">{work.type}</p>
-                                                        <h3 className="text-4xl md:text-5xl font-bold uppercase">{work.title}</h3>
-                                                        <p className="text-sm text-zinc-400 mt-2">{work.items}</p>
-                                                    </div>
+                                                    <h3 className="text-3xl font-bold mb-6">{work.title}</h3>
                                                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                                         {work.gallery.map((img, i) => (
-                                                            <div key={i} className="aspect-square overflow-hidden brutal-border bg-zinc-900 rounded-xl">
-                                                                <img src={`${BASE}${img.url}`} className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" />
+                                                            <div key={i} className="aspect-square bg-zinc-900 brutal-border overflow-hidden rounded-lg">
+                                                                <img src={BASE + img} className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" />
                                                             </div>
                                                         ))}
                                                     </div>
@@ -176,10 +154,6 @@
                                         </div>
                                     </section>
                                 </main>
-
-                                <footer className="py-12 text-center opacity-30 text-[10px] tracking-widest">
-                                    © 2026 JEON GA HYUN. ALL RIGHTS RESERVED.
-                                </footer>
                             </motion.div>
                         )}
                     </AnimatePresence>
