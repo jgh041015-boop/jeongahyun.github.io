@@ -10,10 +10,11 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #09090b; color: white; margin: 0; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #09090b; color: white; margin: 0; overflow-x: hidden; scroll-behavior: smooth; }
         .text-stroke { -webkit-text-stroke: 1px rgba(255,255,255,0.2); color: transparent; }
         .brutal-border { border: 1px solid rgba(255,255,255,0.1); }
         .text-accent { color: #f43f5e; }
+        .bg-accent { background-color: #f43f5e; }
     </style>
 </head>
 <body>
@@ -57,77 +58,104 @@
 
             return (
                 <div className="p-6 md:p-12 max-w-6xl mx-auto">
-                    <header className="mb-24 flex justify-between items-center">
+                    <header className="fixed top-0 left-0 w-full bg-zinc-950/80 backdrop-blur-md z-50 px-6 py-6 md:px-12 flex justify-between items-center">
                         <h1 className="text-xl font-bold uppercase cursor-pointer" onClick={() => setShowMain(false)}>Jeon Ga Hyun</h1>
-                        <nav className="hidden md:flex gap-8 text-[10px] uppercase tracking-widest font-bold opacity-60">
-                            <a href="#profile">Profile</a>
-                            <a href="#works">Works</a>
-                            <a href="#activities">Experience</a>
+                        <nav className="flex gap-4 md:gap-8 text-[9px] md:text-[10px] uppercase tracking-widest font-bold opacity-70">
+                            <a href="#profile" className="hover:text-accent">Profile</a>
+                            <a href="#skills" className="hover:text-accent">Skills</a>
+                            <a href="#works" className="hover:text-accent">Works</a>
+                            <a href="#experience" className="hover:text-accent">Experience</a>
                         </nav>
                     </header>
 
-                    <section className="mb-40">
-                        <p className="text-accent text-xs font-bold uppercase mb-4 tracking-widest">Content Creator</p>
-                        <h2 className="text-7xl md:text-9xl font-bold uppercase tracking-tighter leading-none mb-10">Creative <br/> <span className="text-stroke">Visionary</span></h2>
-                        <div className="flex flex-col md:flex-row gap-10 items-center justify-between">
-                            <p className="flex-1 text-zinc-400 text-xl leading-relaxed break-keep">창의적인 시선으로 세상을 담는 콘텐츠 기획자 전가현입니다. 디지털 툴과 AI를 활용해 상상을 현실로 구현합니다.</p>
-                            <img src={BASE + "profile.jpg"} className="w-56 h-56 rounded-full brutal-border object-cover grayscale hover:grayscale-0 transition-all duration-700" />
-                        </div>
-                    </section>
-
-                    <section id="profile" className="mb-40 grid md:grid-cols-2 gap-10">
-                        <div className="p-10 brutal-border bg-zinc-900/30 rounded-3xl">
-                            <h3 className="text-accent text-xs uppercase mb-8 font-bold tracking-widest">01 Profile</h3>
-                            <div className="space-y-4 text-lg">
-                                <p>전가현 (2004-04-10)</p>
-                                <p className="text-zinc-500 text-sm">한성대학교 문학문화콘텐츠 / SW연계전공</p>
-                                <p className="text-zinc-500 text-sm">jgh041098@naver.com / 010-4184-4476</p>
+                    <main className="pt-32">
+                        {/* HERO SECTION */}
+                        <section className="mb-48">
+                            <p className="text-accent text-xs font-bold uppercase mb-4 tracking-widest">Content Creator</p>
+                            <h2 className="text-7xl md:text-9xl font-bold uppercase tracking-tighter leading-none mb-10">Creative <br/> <span className="text-stroke">Visionary</span></h2>
+                            <div className="flex flex-col md:flex-row gap-10 items-center justify-between">
+                                <p className="flex-1 text-zinc-400 text-xl leading-relaxed break-keep">창의적인 시선으로 세상을 담는 콘텐츠 기획자 전가현입니다. 디지털 툴과 AI를 활용해 상상을 현실로 구현합니다.</p>
+                                <img src={BASE + "profile.jpg"} className="w-56 h-56 rounded-full brutal-border object-cover grayscale hover:grayscale-0 transition-all duration-700" />
                             </div>
-                        </div>
-                        <div className="p-10 brutal-border bg-zinc-900/30 rounded-3xl">
-                            <h3 className="text-accent text-xs uppercase mb-8 font-bold tracking-widest">02 Skills</h3>
-                            <div className="flex flex-wrap gap-2 text-xs uppercase font-bold tracking-tighter">
-                                {['Premiere', 'Photoshop', 'Midjourney', 'Runway', 'Figma', 'Notion'].map(s => (
-                                    <span key={s} className="px-3 py-1 border border-white/10">{s}</span>
+                        </section>
+
+                        {/* 01 PROFILE */}
+                        <section id="profile" className="mb-48 scroll-mt-32">
+                            <div className="flex items-baseline gap-4 mb-12">
+                                <span className="text-accent text-4xl opacity-50 font-bold">01</span>
+                                <h3 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter">Profile</h3>
+                            </div>
+                            <div className="p-10 brutal-border bg-zinc-900/30 rounded-3xl">
+                                <div className="space-y-6 text-xl">
+                                    <p className="font-bold">전가현 (2004-04-10)</p>
+                                    <p className="text-zinc-400">한성대학교 문학문화콘텐츠 / SW연계전공</p>
+                                    <div className="pt-4 border-t border-white/5 text-sm text-zinc-500 space-y-2">
+                                        <p>📧 jgh041098@naver.com</p>
+                                        <p>📞 010-4184-4476</p>
+                                        <p>🏆 2025 생성형 AI 콘텐츠 챌린지 최우수상</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* 02 SKILLS */}
+                        <section id="skills" className="mb-48 scroll-mt-32">
+                            <div className="flex items-baseline gap-4 mb-12">
+                                <span className="text-accent text-4xl opacity-50 font-bold">02</span>
+                                <h3 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter">Skills</h3>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {['Premiere Pro', 'Photoshop', 'Midjourney', 'Runway', 'Figma', 'Notion', 'CapCut', 'VLLO', 'After Effects'].map(skill => (
+                                    <div key={skill} className="p-6 brutal-border bg-zinc-900/20 text-center uppercase text-xs font-bold tracking-widest hover:bg-accent/10 transition-colors">
+                                        {skill}
+                                    </div>
                                 ))}
                             </div>
-                        </div>
-                    </section>
+                        </section>
 
-                    <section id="works" className="mb-40">
-                        <h3 className="text-4xl font-bold uppercase mb-16 tracking-tighter">Selected Works</h3>
-                        <div className="space-y-24">
-                            {works.map((work, idx) => (
-                                <div key={idx} className="group">
-                                    <div className="mb-6">
-                                        <h4 className="text-2xl font-bold uppercase mb-2">{work.title}</h4>
-                                        <p className="text-xs text-zinc-500 uppercase tracking-widest">{work.type} — {work.desc}</p>
+                        {/* 03 WORKS */}
+                        <section id="works" className="mb-48 scroll-mt-32">
+                            <div className="flex items-baseline gap-4 mb-12">
+                                <span className="text-accent text-4xl opacity-50 font-bold">03</span>
+                                <h3 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter">Selected Works</h3>
+                            </div>
+                            <div className="space-y-32">
+                                {works.map((work, idx) => (
+                                    <div key={idx} className="group">
+                                        <div className="mb-8">
+                                            <h4 className="text-3xl font-bold uppercase mb-2">{work.title}</h4>
+                                            <p className="text-xs text-zinc-500 uppercase tracking-widest">{work.type} — {work.desc}</p>
+                                        </div>
+                                        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                                            {work.gallery.map((img, i) => (
+                                                <div key={i} className="aspect-square bg-zinc-900 brutal-border overflow-hidden rounded-xl">
+                                                    <img src={BASE + img} className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-all duration-700" />
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                                        {work.gallery.map((img, i) => (
-                                            <div key={i} className="aspect-square bg-zinc-900 brutal-border overflow-hidden rounded-xl">
-                                                <img src={BASE + img} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
+                                ))}
+                            </div>
+                        </section>
 
-                    <section id="activities" className="mb-40">
-                        <h3 className="text-4xl font-bold uppercase mb-16 tracking-tighter">Experience</h3>
-                        <div className="space-y-10 border-l border-white/10 pl-8 ml-2">
-                            {activities.map((act, i) => (
-                                <div key={i} className="relative">
-                                    <div className="absolute -left-[37px] top-1.5 w-3 h-3 rounded-full bg-accent border-4 border-zinc-950" />
-                                    <span className="text-xs text-accent font-bold uppercase tracking-widest">{act.date}</span>
-                                    <h4 className="text-xl font-bold mt-1 uppercase">{act.title}</h4>
-                                    <p className="text-zinc-500 text-sm mt-2 leading-relaxed">{act.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
+                        {/* 04 EXPERIENCE */}
+                        <section id="experience" className="mb-48 scroll-mt-32">
+                            <div className="flex items-baseline gap-4 mb-12">
+                                <span className="text-accent text-4xl opacity-50 font-bold">04</span>
+                                <h3 className="text-4xl md:text-6xl font-bold uppercase tracking-tighter">Experience</h3>
+                            </div>
+                            <div className="space-y-12 border-l border-white/10 pl-8 ml-2">
+                                {activities.map((act, i) => (
+                                    <div key={i} className="relative group">
+                                        <div className="absolute -left-[37px] top-1.5 w-3 h-3 rounded-full bg-zinc-800 border-2 border-zinc-950 group-hover:bg-accent transition-colors" />
+                                        <span className="text-xs text-accent font-bold uppercase tracking-widest">{act.date}</span>
+                                        <h4 className="text-2xl font-bold mt-1 uppercase">{act.title}</h4>
+                                        <p className="text-zinc-500 text-sm mt-2 leading-relaxed break-keep">{act.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    </main>
 
                     <footer className="py-20 border-t border-zinc-900 text-center opacity-20 text-[9px] tracking-[0.5em] uppercase">
                         © 2026 JEON GA HYUN. ALL RIGHTS RESERVED.
