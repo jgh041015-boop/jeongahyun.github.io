@@ -8,15 +8,13 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #09090b; color: white; margin: 0; overflow-x: hidden; }
         .text-stroke { -webkit-text-stroke: 1px rgba(255,255,255,0.3); color: transparent; }
         .brutal-border { border: 1px solid rgba(255,255,255,0.1); }
         .text-accent { color: #f43f5e; }
-        .bg-accent { background-color: #f43f5e; }
     </style>
 </head>
 <body>
@@ -24,139 +22,86 @@
 
     <script type="text/babel">
         const { useState } = React;
-        const { motion, AnimatePresence } = window.Motion;
-
         const BASE = "https://raw.githubusercontent.com/jgh041015-boop/jeongahyun.github.io/main/";
 
-        // 아이콘을 텍스트 기반으로 안전하게 출력하는 컴포넌트
-        const LucideIcon = ({ name, size = 20, className = "" }) => {
-            const IconTag = lucide[name];
-            return IconTag ? <IconTag size={size} className={className} /> : null;
-        };
-
+        // 에러 원천 차단: 컴포넌트 호출 방식을 가장 단순한 함수형으로 통일
         function App() {
             const [showMain, setShowMain] = useState(false);
 
             const activities = [
-                { date: "2024/05/21 ~ 2024/08/18", title: "교내 소모임 ‘크로셰’ 소모임장", desc: "교내 소모임을 이끌며 다양한 창작 활동을 진행함." },
-                { date: "2025/05/01 ~ 2025/08/18", title: "교내 소모임 ‘알쓸한잡’", desc: "인스타그램 운영 및 카페 추천 콘텐츠 기획.", link: "https://www.instagram.com/ashs_zip", type: 'Instagram' },
-                { date: "2025/09/01 ~ 2025/12/05", title: "학과 소모임 ‘프리즘’", desc: "독서 소모임 활동 및 학과 우수 소모임 선정." },
-                { date: "2025. 9. 5. ~ 현재", title: "개인 유튜브 채널 운영", desc: "공연 브이로그 편집. 조회수 1천 회 기록.", link: "https://www.youtube.com/@heimoffgogo", type: 'Youtube' },
-                { date: "2025/11/24", title: "2025 단양갱 페스타 서포터즈", desc: "AI 활용 홍보 영상 제작." },
-                { date: "2025/11/28", title: "2025 한성 SW 페스티벌", desc: "생성형 AI 영상 제작 최우수상 수상." },
-                { date: "2026/3/03 ~ 현재", title: "2026 여수세계섬박람회 서포터즈", desc: "AI 애니메이션 제작 중." }
+                { d: "2024/05/21 ~ 2024/08/18", t: "교내 소모임 '크로셰' 소모임장", c: "다양한 창작 활동 진행." },
+                { d: "2025/05/01 ~ 2025/08/18", t: "교내 소모임 '알쓸한잡'", c: "인스타/숏폼 기획 제작." },
+                { d: "2025/11/28", t: "2025 한성 SW 페스티벌", c: "AI 영상 제작 최우수상 수상." },
+                { d: "2026/3/03 ~ 현재", t: "2026 여수세계섬박람회 서포터즈", c: "AI 애니메이션 제작 중." }
             ];
 
             const works = [
-                { title: "가나 광고", type: "AD", items: "Figma 인쇄광고 비주얼", gallery: ['gana_gift.png', 'gana_yt.png', 'gana_movie.png', 'gana_interpark.png', 'gana_reels.png'] },
-                { title: "방문자: THE GUEST", type: "Animation", items: "AI 콘텐츠 챌린지 수상작", gallery: ['guest_poster.png'] },
-                { title: "나루와 상이", type: "Animation", items: "여수국제웹드라마영화제 출품작", gallery: ['naru_1.png', 'naru_2.png', 'naru_3.png', 'naru_4.png', 'naru_5.png'] }
+                { t: "가나 광고", g: ['gana_gift.png', 'gana_yt.png', 'gana_movie.png', 'gana_interpark.png', 'gana_reels.png'] },
+                { t: "THE GUEST", g: ['guest_poster.png'] },
+                { t: "나루와 상이", g: ['naru_1.png', 'naru_2.png', 'naru_3.png', 'naru_4.png', 'naru_5.png'] }
             ];
 
+            // 인트로 화면
+            if (!showMain) {
+                return (
+                    <div className="fixed inset-0 flex items-center justify-center bg-zinc-950 cursor-pointer" onClick={() => setShowMain(true)}>
+                        <div className="text-center">
+                            <h1 className="text-7xl md:text-[10rem] font-bold uppercase tracking-tighter leading-none hover:text-accent transition-all">Jeon<br/>Ga Hyun</h1>
+                            <p className="mt-8 text-sm uppercase tracking-[0.5em] opacity-40">Click to Enter</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            // 본문 화면
             return (
-                <div className="min-h-screen bg-zinc-950">
-                    <AnimatePresence mode="wait">
-                        {!showMain ? (
-                            <motion.div key="intro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -20 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950 cursor-pointer" onClick={() => setShowMain(true)}>
-                                <div className="text-center">
-                                    <h1 className="text-7xl md:text-[10rem] font-bold uppercase tracking-tighter leading-none hover:text-accent transition-colors duration-500">Jeon <br className="md:hidden" /> Ga Hyun</h1>
-                                    <p className="mt-8 text-sm uppercase tracking-[0.5em] opacity-40 animate-pulse">Click to Enter</p>
+                <div className="p-6 md:p-12 max-w-6xl mx-auto">
+                    <header className="mb-24 flex justify-between items-center">
+                        <h1 className="text-xl font-bold uppercase cursor-pointer" onClick={() => setShowMain(false)}>Jeon Ga Hyun</h1>
+                    </header>
+
+                    <section className="mb-40">
+                        <p className="text-accent text-xs font-bold uppercase mb-4">Content Creator</p>
+                        <h2 className="text-7xl md:text-9xl font-bold uppercase tracking-tighter leading-none mb-10">Creative <br/> <span className="text-stroke">Visionary</span></h2>
+                        <div className="flex flex-col md:flex-row gap-10 items-center">
+                            <p className="flex-1 text-zinc-400 text-lg">디지털 툴과 AI를 활용해 상상을 현실로 구현하는 전가현입니다.</p>
+                            <img src={BASE + "profile.jpg"} className="w-48 h-48 rounded-full brutal-border object-cover grayscale" />
+                        </div>
+                    </section>
+
+                    <section className="mb-40 grid md:grid-cols-2 gap-10">
+                        <div className="p-8 brutal-border bg-zinc-900/50">
+                            <h3 className="text-accent text-xs uppercase mb-6 font-bold">01 Profile</h3>
+                            <p className="text-zinc-300 mb-2">전가현 (2004-04-10)</p>
+                            <p className="text-zinc-500 text-sm">한성대 문콘 / SW연계전공</p>
+                        </div>
+                        <div className="p-8 brutal-border bg-zinc-900/50">
+                            <h3 className="text-accent text-xs uppercase mb-6 font-bold">02 Skills</h3>
+                            <p className="text-sm text-zinc-400">Premiere Pro, Photoshop, Midjourney, Runway, Figma</p>
+                        </div>
+                    </section>
+
+                    <section className="mb-40">
+                        <h3 className="text-3xl font-bold mb-12 uppercase">Selected Works</h3>
+                        <div className="space-y-20">
+                            {works.map((work, idx) => (
+                                <div key={idx}>
+                                    <h4 className="text-xl font-bold mb-4">{work.t}</h4>
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+                                        {work.g.map((img, i) => (
+                                            <div key={i} className="aspect-square bg-zinc-900 brutal-border overflow-hidden">
+                                                <img src={BASE + img} className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" />
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </motion.div>
-                        ) : (
-                            <motion.div key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-                                <header className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-6 py-8 md:px-12 flex justify-between items-center text-white">
-                                    <h1 className="text-2xl font-bold uppercase cursor-pointer" onClick={() => setShowMain(false)}>Jeon Ga Hyun</h1>
-                                    <nav className="hidden md:flex gap-8 text-xs uppercase tracking-widest font-semibold">
-                                        <a href="#profile" className="hover:text-accent">Profile</a>
-                                        <a href="#skills" className="hover:text-accent">Skills</a>
-                                        <a href="#works" className="hover:text-accent">Works</a>
-                                    </nav>
-                                </header>
+                            ))}
+                        </div>
+                    </section>
 
-                                <main className="pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto">
-                                    <section className="mb-32 min-h-[70vh] flex items-center">
-                                        <div className="flex flex-col md:flex-row gap-8 items-center justify-between w-full">
-                                            <div className="md:w-3/4">
-                                                <p className="text-accent text-sm mb-4 uppercase tracking-widest font-bold">Content Planner & Creator</p>
-                                                <h2 className="text-7xl md:text-9xl font-bold uppercase tracking-tighter leading-none mb-10">Creative <br /> <span className="text-stroke">Visionary</span></h2>
-                                                <p className="text-lg text-zinc-400 max-w-2xl leading-relaxed">디지털 툴과 AI를 활용해 상상을 현실로 구현하는 전가현입니다.</p>
-                                            </div>
-                                            <div className="md:w-1/4">
-                                                <div className="w-64 h-64 rounded-full overflow-hidden brutal-border"><img src={BASE + "profile.jpg"} className="w-full h-full object-cover grayscale hover:grayscale-0" /></div>
-                                            </div>
-                                        </div>
-                                    </section>
-
-                                    <section id="profile" className="mb-40">
-                                        <div className="flex items-baseline gap-4 mb-12">
-                                            <span className="text-accent text-4xl opacity-50 font-bold">01</span>
-                                            <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter">Profile</h2>
-                                        </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-lg">
-                                            <div className="space-y-6">
-                                                <p className="flex items-center gap-4"><LucideIcon name="User" /> 전가현 (2004-04-10)</p>
-                                                <p className="flex items-center gap-4"><LucideIcon name="GraduationCap" /> 한성대학교 문콘 / SW연계전공</p>
-                                                <p className="flex items-center gap-4"><LucideIcon name="Mail" /> jgh041098@naver.com</p>
-                                            </div>
-                                            <div className="p-8 bg-zinc-900 brutal-border rounded-2xl">
-                                                <h3 className="text-accent text-xs mb-4 uppercase font-bold tracking-widest">Awards</h3>
-                                                <p className="text-zinc-200">• 2025 생성 AI 콘텐츠 챌린지 최우수상</p>
-                                            </div>
-                                        </div>
-                                    </section>
-
-                                    <section id="works" className="mb-40">
-                                        <div className="flex items-baseline gap-4 mb-12">
-                                            <span className="text-accent text-4xl opacity-50 font-bold">02</span>
-                                            <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter">Selected Works</h2>
-                                        </div>
-                                        <div className="space-y-20">
-                                            {works.map((work, idx) => (
-                                                <div key={idx}>
-                                                    <h3 className="text-3xl font-bold mb-6 uppercase tracking-tighter">{work.title}</h3>
-                                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                                                        {work.gallery.map((img, i) => (
-                                                            <div key={i} className="aspect-square bg-zinc-900 brutal-border overflow-hidden rounded-xl group/img">
-                                                                <img src={BASE + img} className="w-full h-full object-cover opacity-60 group-hover/img:opacity-100 transition-opacity duration-500" />
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </section>
-
-                                    <section id="activities" className="mb-40">
-                                        <div className="flex items-baseline gap-4 mb-12">
-                                            <span className="text-accent text-4xl opacity-50 font-bold">03</span>
-                                            <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter">Experience</h2>
-                                        </div>
-                                        <div className="space-y-12">
-                                            {activities.map((act, i) => (
-                                                <div key={i} className="border-l-2 border-white/10 pl-8 ml-2">
-                                                    <span className="text-xs text-accent font-bold uppercase tracking-widest">{act.date}</span>
-                                                    <h4 className="text-2xl font-bold mt-1 flex items-center gap-3">
-                                                        {act.title}
-                                                        {act.link && (
-                                                            <a href={act.link} target="_blank" className="hover:scale-125 transition-transform">
-                                                                <LucideIcon name={act.type} size={16} className={act.type === 'Instagram' ? 'text-pink-500' : 'text-red-500'} />
-                                                            </a>
-                                                        )}
-                                                    </h4>
-                                                    <p className="text-zinc-400 mt-2">{act.desc}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </section>
-                                </main>
-
-                                <footer className="py-20 border-t border-zinc-900 text-center opacity-30 text-[10px] tracking-widest uppercase">
-                                    © 2026 JEON GA HYUN. ALL RIGHTS RESERVED.
-                                </footer>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                    <footer className="py-20 border-t border-zinc-900 text-center opacity-20 text-[10px] tracking-widest uppercase">
+                        © 2026 JEON GA HYUN. ALL RIGHTS RESERVED.
+                    </footer>
                 </div>
             );
         }
